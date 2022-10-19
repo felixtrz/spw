@@ -1,0 +1,18 @@
+{
+  "name": "simple-peer-wrapper",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "browserify src/index.js -s SimplePeerWrapper -r | minify > dist/simple-peer-wrapper.min.js",
+    "watch": "watchify src/index.js -s SimplePeerWrapper -o dist/simple-peer-wrapper.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-minify": "^0.5.1",
+    "browserify": "^17.0.0",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.1.1"
+  }
+}

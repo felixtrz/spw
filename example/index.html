@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Peer Wrapper Example — Data</title>
+  </head>
+
+  <body>
+    <h1>Simple Peer Wrapper Example — Data</h1>
+    <script src="../../dist/simple-peer-wrapper.min.js"></script>
+    <script>
+      let spw;
+
+      const options = {
+        debug: true,
+        serverUrl: 'https://whereismypeer.net:8000',
+      };
+
+      window.onload = () => {
+        const startButton = document.querySelector('#start');
+        const sessionIdBox = document.querySelector('#session-id');
+        const sendButton = document.querySelector('#send');
+        const messageBox = document.querySelector('#message');
+        startButton.onclick = () => {
+          if (sessionIdBox.value != '') {
+            options.isInitiator = false;
+            options.sessionId = sessionIdBox.value;
+            console.log(options);
+          }
+
+          spw = new SimplePeerWrapper(options);
+
+          // Make the peer connection
+          spw.connect();
+
+          // Do something when the connection is made
+          spw.on('connect', onConnect);
+
+          // When data recieved over the connection call gotData
+          spw.on('data', onData);
+
+          spw.onCreated((room) => {
+            console.log(room);
+          });
+
+          spw.onPeerJoined(() => {
+            console.log('joined');
+          });
+        };
+
+        sendButton.onclick = () => {
+          console.log(
+            'send',
+            messageBox.value,
+            spw.isConnectionStarted(),
+          );
+          spw.send(messageBox.value);
+        };
+
+        const onData = (data) => {
+          console.log(data);
+          partnerMousePosition = data.data;
+        };
+
+        const onConnect = () => {
+          console.log('peer connection open');
+        };
+      };
+
+      // Close simple-peer connections before exiting
+      window.onbeforeunload = () => {
+        spw.close();
+      };
+    </script>
+    <input type="text" id="session-id" />
+    <button id="start">Start</button>
+    <input type="text" id="message" />
+    <button id="send">Send</button>
+  </body>
+</html>
