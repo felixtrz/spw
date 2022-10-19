@@ -1,5 +1,7 @@
 {
   "name": "simple-peer-wrapper",
+  "version": "0.1.0",
+  "description": "Simple peer client wrapper",
   "main": "src/index.js",
   "scripts": {
     "build": "browserify src/index.js -s SimplePeerWrapper -r | minify > dist/simple-peer-wrapper.min.js",
